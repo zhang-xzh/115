@@ -1,5 +1,20 @@
 # AGENTS.md — DFO 115us 本地/局域网模拟服务端
 
+> **本地 fork 分支策略（EVE 风格，强制）**：本节的分支/worktree/合并流程优先于下文与上游 GitLab/旧 fork 流程冲突的部分；提交内容、密钥、大文件门禁仍按 §0.3 执行。
+> 远端约定：`upstream` = `KinkOwO/115`（只读基线）；`origin` = `zhang-xzh/115`（本地 fork）。下文的 `fork = RicardoLz/115` 是上游历史说明，本地不适用。
+
+## 0.0 本地 fork 分支策略
+
+- **两条长期分支**：`main` = 上游基线，只读，不直接提交、不合并任务分支；`plus` = 本地开发集成线，所有任务分支从 `plus` 出发并合回 `plus`。
+- **开工唯一方式**：主 checkout 固定检出 `plus`；`git fetch upstream` → `git checkout plus` → `git pull`（如已配置远端）→ `git worktree add -b <前缀>/<功能>-<sessionid> M:\DNF-US-115\worktrees\wt-<task> plus`。禁止在主 checkout 用 `git checkout -b`/`git switch -c` 建任务分支；禁止在主 checkout 直接改文件开发；禁止同一分支被两个 worktree 同时检出。
+- **命名**：`<前缀>/<功能>-<sessionid>`；前缀 `feat/`、`fix/`、`doc/`、`chore/`；功能用简短英文；`sessionid` 取 `$env:OPENCODE_SESSION_ID`（无则用短哈希）。
+- **完成与合并**：worktree 内提交干净 → 主 checkout `git checkout plus` → 同步 `plus` → `git merge --no-ff <任务分支>` → 解冲突并提交。合并后**保留分支**，只 `git worktree remove` 清理 worktree。
+- **合并前**：若 `plus` 已前进，先把任务分支 merge/rebase 到最新 `plus`；禁止在共享分支上 `push --force`。
+- **并发**：多对话/多 agent 串行合并；同一目标分支同时只有一个合并成功，失败后 `git fetch` 重试；同文件同区域人工解冲突，不同区域自行验证语义。
+- **提交**：沿用 §0.3 门禁与中文提交信息；提交前跑 `scripts/check-commit-hygiene.ps1`；不提交密钥/证书/日志/临时产物/大文件；不 `--force`、不建空提交；不自动 push（除非明确要求）。
+- **目录**：仓库根 `M:\DNF-US-115\115`；worktree `M:\DNF-US-115\worktrees\wt-<task>`；参考资料 `M:\DNF-US-115\reference\`（CN 分析、旧工具、Go 工具链）只读，不入库。
+- **目标客户端**：DFO 115US 2.38.2.34；`DFO.exe 246,480,896 / Script.pvf 760,531,281 / sk.dat 2,560`；不以 CN 客户端做强兼容；CN 数据仅作补丁来源。
+
 > 本文件是 `DFO 115us` 项目的唯一 AGENTS 根真源；用户目录或其它副本仅作镜像，冲突时以本文件为准。
 > 先读本文件，再按 §1 的触发规则读子目录 `AGENTS.md`；默认不读 `server/reference/` 与历史归档。
 >
