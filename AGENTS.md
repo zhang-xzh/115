@@ -9,6 +9,8 @@
 - **开工唯一方式**：主 checkout 固定检出 `plus`；`git fetch upstream` → `git checkout plus` → `git pull`（如已配置远端）→ `git worktree add -b <前缀>/<功能>-<sessionid> M:\DNF-US-115\worktrees\wt-<task> plus`。禁止在主 checkout 用 `git checkout -b`/`git switch -c` 建任务分支；禁止在主 checkout 直接改文件开发；禁止同一分支被两个 worktree 同时检出。
 - **命名**：`<前缀>/<功能>-<sessionid>`；前缀 `feat/`、`fix/`、`doc/`、`chore/`；功能用简短英文；`sessionid` 取 `$env:OPENCODE_SESSION_ID`（无则用短哈希）。
 - **完成与合并**：worktree 内提交干净 → 主 checkout `git checkout plus` → 同步 `plus` → `git merge --no-ff <任务分支>` → 解冲突并提交。合并后**保留分支**，只 `git worktree remove` 清理 worktree。
+- **上游同步（手工）**：`git fetch upstream` 只更新引用；**禁止 `git merge upstream/main` 整体合并**。用 `git log --oneline main..upstream/main`、`git diff main..upstream/main -- <path>` 查看实际改动，按文件/功能手工应用（`git show` / `git apply` / 手改）；在任务分支验证后再合入 `plus`。`main` 只作上游快照/对照，不承载开发。
+- **已移除跟踪的路径**：见 `docs/UNTRACKED.md`；上游若修改这些路径，按 diff 手工处理，不要把整包合并回来。
 - **合并前**：若 `plus` 已前进，先把任务分支 merge/rebase 到最新 `plus`；禁止在共享分支上 `push --force`。
 - **并发**：多对话/多 agent 串行合并；同一目标分支同时只有一个合并成功，失败后 `git fetch` 重试；同文件同区域人工解冲突，不同区域自行验证语义。
 - **提交**：沿用 §0.3 门禁与中文提交信息；提交前跑 `scripts/check-commit-hygiene.ps1`；不提交密钥/证书/日志/临时产物/大文件；不 `--force`、不建空提交；不自动 push（除非明确要求）。

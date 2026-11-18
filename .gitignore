@@ -22,10 +22,6 @@
 # 纳入版本控制会导致数据损坏和仓库无限膨胀。
 # ------------------------------------------------------------------------------
 /server/work/dfo-lan/runtime/*
-!/server/work/dfo-lan/runtime/characters_ok.bin
-!/server/work/dfo-lan/runtime/login_ok.bin
-!/server/work/dfo-lan/runtime/name_ok.bin
-!/server/work/dfo-lan/runtime/precheck_ok.bin
 /server/work/dfo-lan/runtime/storage/pgdata/
 /server/work/dfo-lan/runtime/storage/*.log
 /server/work/dfo-lan/runtime/roles_*/
@@ -253,3 +249,17 @@ secrets/
 # 压缩包
 *.7z
 *.rar
+
+# ==============================================================================
+# 9. 本地 fork：已从索引移除的产物/数据（文件仍在磁盘，见 docs/UNTRACKED.md）
+# ==============================================================================
+/gm-tool/configs/
+!/gm-tool/configs/tech_debt.md
+/analysis/dumps/*
+!/analysis/dumps/README.md
+!/analysis/dumps/CLIENT-MECHANICS.md
+/pvf_cache/
+/tools/*.zip
+/DFO-115US*.exe
+/server/work/dfo_probe_tools/probe.exe
+/server/work/dfo-lan/runtime/*_ok.bin
