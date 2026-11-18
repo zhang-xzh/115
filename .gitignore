@@ -183,3 +183,73 @@ server/work/client-build/Script.inner.manifest.json
 !/server/work/dfo-lan/mods/README.md
 !/server/work/dfo-lan/mods/zz_mods_gen.go
 !/server/work/dfo-lan/mods/zz_mods_test.go
+
+# ==============================================================================
+# 8. 本地 fork：只保留代码/文档/工具，忽略构建产物、缓存与本地数据
+# ==============================================================================
+
+# 本地工作区与临时目录
+/local/
+/worktrees/
+/captures/
+/.opencode/tmp/
+
+# Go / C / Rust / .NET 构建产物与缓存
+target/
+obj/
+out/
+dist/
+build/
+.gocache/
+gocache/
+gopath/
+coverage.out
+*.cover
+*.prof
+*.test
+*.o
+*.obj
+*.lib
+*.pdb
+*.ilk
+*.exp
+*.class
+node_modules/
+.npm/
+.pnpm-store/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+*.egg-info/
+pip-wheel-metadata/
+*.pyo
+*.tmp
+*.temp
+
+# 客户端 / PVF / 数据库 / 抓包
+client/
+client-build/
+ImagePacks2/
+*.npk
+*.pvf
+*.inner.pvf
+*.required.pvf
+sk.dat
+*.db
+*.sqlite
+*.sqlite3
+*-wal
+*-shm
+*.dlog
+
+# 本地密钥与私有配置
+secrets/
+.env
+.env.*
+*.local.json
+
+# 压缩包
+*.7z
+*.rar
